@@ -60,7 +60,7 @@ function verifyDownload()
 
     printInfo "Computing hash for ${sourcePathBase}"
 
-    computeHash=$(sha256sum "${sourcePath}" | cut -d ' ' -f 1)
+    computeHash=$(sha256 -q "${sourcePath}")
     [ $? -eq 0 ] || serpentFail "Failed to compute SHA256sum"
 
     [ "${computeHash}" == "${sourceHash}" ] || serpentFail "Corrupt download: ${sourcePath}"
@@ -134,12 +134,12 @@ function prefetchSources()
 }
 
 # Tightly control the path
-export PATH="/usr/bin:/bin/:/sbin:/usr/sbin"
+export PATH="/usr/bin:/bin/:/sbin:/usr/sbin:/usr/local/bin"
 
 # Make sure he scripts are properly implemented.
 [ ! -z "${SERPENT_STAGE_NAME}" ] || serpentFail "Stage name is not set"
 
-export SERPENT_ROOT_DIR="$(dirname $(realpath -s ${BASH_SOURCE[0]}))"
+export SERPENT_ROOT_DIR="$(dirname $(realpath ${BASH_SOURCE[0]}))"
 export SERPENT_BUILD_ROOT="${SERPENT_ROOT_DIR}/build"
 export SERPENT_DOWNLOAD_DIR="${SERPENT_ROOT_DIR}/downloads"
 export SERPENT_INSTALL_ROOT="${SERPENT_ROOT_DIR}/install"

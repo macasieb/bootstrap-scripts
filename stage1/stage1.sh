@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-executionPath=$(dirname $(realpath -s $0))
+executionPath=$(dirname $(realpath $0))
 
 COMPONENTS=(
     "headers"
